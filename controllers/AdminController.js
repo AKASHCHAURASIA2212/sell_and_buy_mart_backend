@@ -23,7 +23,7 @@ class AdminController {
             console.log("------------- getAllItems -------------");
             console.log(userData.res.length, userData.totalCount,);
             console.log(itemData.res.length, itemData.totalCount);
-            console.log(mailData.res.length, itemData.totalCount);
+            console.log(mailData.res.length, mailData.totalCount);
             console.log("------------- getAllItems -------------");
 
             res.status(200).send({

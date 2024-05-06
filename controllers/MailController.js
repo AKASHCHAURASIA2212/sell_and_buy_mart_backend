@@ -8,11 +8,9 @@ export class MailController {
 
     async getAllMail(req, res) {
         try {
-            // const { chatId } = req.body;
-            // const chats = await Chat.find({ itemId });
-            console.log(chatId);
+            const { page, limit } = req.params;
 
-            const mails = await this.MailService.getAllMail();
+            const mails = await this.MailService.getAllMail(Number(page), Number(limit));
 
             console.log(mails);
 
@@ -75,17 +73,19 @@ export class MailController {
     async addMail(req, res) {
         try {
             const { userId } = req.params;
-            const { subject, email, smessage } = req.body
+            const { subject, email, message } = req.body
 
             let data = {
                 subject,
-                smessage,
+                message,
                 email,
                 sentBy: userId,
-                sendTo: 'admin'
+                sentTo: 'admin'
             }
 
             let newMail = new Mail(data);
+
+            console.log(newMail);
 
             const mails = await this.MailService.addMail(newMail);
 

@@ -13,7 +13,8 @@ export class ItemController {
     // Function to add a new item
     async addNewItem(req, res) {
         try {
-            const { seller, item_name, item_category, item_price, item_desc, location, posted_by } = req.body;
+
+            const { seller, item_name, item_category, item_price, item_desc, location, posted_by, img } = req.body;
 
             console.log(req.body);
 
@@ -24,8 +25,8 @@ export class ItemController {
                 item_price,
                 item_desc,
                 location,
-                posted_by
-
+                posted_by,
+                img
             }
 
             data.item_id = generateMongoId();

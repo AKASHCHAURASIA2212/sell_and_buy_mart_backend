@@ -1,9 +1,9 @@
-import Mail from "../models/MailSchema.js";
+import { Mail } from "../models/MailSchema.js";
 import { getDB } from "../db/connection.js";
 export default class MailService {
 
     // Controller function to get all mail messages
-    allMail = async (newMail) => {
+    async addMail(newMail) {
         try {
             // get db
             const db = getDB();
@@ -11,28 +11,71 @@ export default class MailService {
             const collection = db.collection('mails')
 
             const allMail = await collection.insertOne(newMail);
-            res.json("New Mail added");
+            return allMail
         } catch (err) {
-            res.status(500).json({ message: err.message });
+            // res.status(500).json({ message: err.message });
+            console.log(err);
+            return false
         }
     };
     // Controller function to get all mail messages
-    getAllMail = async () => {
+    async getAllMail(currentPage, pageSize) {
         try {
+
+            console.log(pageSize, currentPage);
             // get db
             const db = getDB();
             // get collection
             const collection = db.collection('mails')
 
-            const allMail = await collection.find({});
-            res.json(allMail);
+            let totalCount = await collection.countDocuments({})
+
+
+            const allMail = await collection.aggregate([
+                {
+                    $match: {
+                        sentTo: 'admin'
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'sentBy',
+                        foreignField: 'user_id',
+                        as: 'sender'
+                    }
+                },
+                {
+                    $unwind: '$sender'
+                },
+                {
+                    $project: {
+                        subject: 1,
+                        message: 1,
+                        email: 1,
+                        'sender.user_id': 1,
+                        'sender.username': 1,
+                        'sender.address': 1,
+                    }
+                }
+            ])
+                .skip((currentPage - 1) * pageSize)
+                .limit(pageSize)
+                .toArray();
+
+
+            // const allMail = await collection.find({}).skip((currentPage - 1) * pageSize)
+            //     .limit(pageSize)
+            //     .toArray();
+            return { allMail, totalCount }
         } catch (err) {
-            res.status(500).json({ message: err.message });
+            console.log(err);
+            return false;
         }
     };
 
     // Controller function to get mail messages by user ID
-    getMailByUserId = async (userId) => {
+    async getMailByUserId(userId) {
         try {
             // get db
             const db = getDB();
@@ -47,7 +90,7 @@ export default class MailService {
     };
 
     // Controller function to get mail messages by sender
-    getMailBySendBy = async (senderName) => {
+    async getMailBySendBy(senderName) {
         try {
             // get db
             const db = getDB();
@@ -62,7 +105,7 @@ export default class MailService {
     };
 
     // Controller function to get mail messages by recipient
-    getMailBySendTo = async (recipientName) => {
+    async getMailBySendTo(recipientName) {
         try {
             // get db
             const db = getDB();

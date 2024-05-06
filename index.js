@@ -1,18 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors'
+import { connectToMongoDB } from './db/connection.js';
 const app = express();
 const port = 3000;
-
-// Import MongoDB connection
-// import { connectToMongoDB } from ;
-import { connectToMongoDB } from './db/connection.js';
-// Import middleware
-// import { authMiddleware } from './middleware/authenticate.js';
-// import { loggerMiddleware } from './middleware/logs.js';
-
-// Middleware to parse JSON requests
-// app.use(express.json());
 const corsOptions = {
     origin: '*',
     credentials: true,            //access-control-allow-credentials:true
