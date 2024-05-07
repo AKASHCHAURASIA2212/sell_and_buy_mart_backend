@@ -2,7 +2,7 @@ import { Chat } from '../models/ChatSchema.js'; // Import the Chat model
 import ChatService from '../services/ChatService.js';
 import UserService from '../services/UserService.js';
 import ItemService from '../services/ItemService.js';
-import { generateMongoId } from '../utils/genrateId.js'
+import { generateMongoId } from '../../utils/genrateId.js'
 export class ChatController {
     constructor() {
         this.ChatService = new ChatService();

@@ -1,7 +1,7 @@
 import { Item } from '../models/ItemSchema.js';
 import ItemService from '../services/ItemService.js';
 
-import { generateMongoId } from '../utils/genrateId.js'
+import { generateMongoId } from '../../utils/genrateId.js'
 
 
 export class ItemController {

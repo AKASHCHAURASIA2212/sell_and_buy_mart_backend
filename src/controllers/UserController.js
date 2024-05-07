@@ -2,7 +2,7 @@ import { User } from '../models/UserSchema.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import UserService from '../services/UserService.js';
-import { generateMongoId } from '../utils/genrateId.js'
+import { generateMongoId } from '../../utils/genrateId.js'
 
 
 

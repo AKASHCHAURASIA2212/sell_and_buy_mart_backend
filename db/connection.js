@@ -1,6 +1,9 @@
 import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
+dotenv.config();
 
-const connection_url = 'mongodb://0.0.0.0:27017/db';
+let connection_url = process.env.DB_CONNECTION_STRING
+// let connection_url = 'mongodb://0.0.0.0:27017/db';
 
 let db_connection;
 
@@ -13,7 +16,6 @@ export const connectToMongoDB = () => {
             console.log("Error in Connected To Mongo DB : ", err);
         })
 }
-
 export const getDB = () => {
     return db_connection;
 }

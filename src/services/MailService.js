@@ -1,5 +1,5 @@
 import { Mail } from "../models/MailSchema.js";
-import { getDB } from "../db/connection.js";
+import { getDB } from "../../db/connection.js";
 export default class MailService {
 
     // Controller function to get all mail messages

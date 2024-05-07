@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-import { generateMongoId } from '../utils/genrateId.js'
+import { generateMongoId } from '../../utils/genrateId.js'
 
 // Define the Item schema
 const itemSchema = new Schema({

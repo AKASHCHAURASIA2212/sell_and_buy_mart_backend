@@ -1,4 +1,4 @@
-import { getDB } from "../db/connection.js";
+import { getDB } from "../../db/connection.js";
 import mongodb from 'mongodb';
 import { Chat } from '../models/ChatSchema.js'; // Import the Chat model
 import { UserController } from '../controllers/UserController.js'

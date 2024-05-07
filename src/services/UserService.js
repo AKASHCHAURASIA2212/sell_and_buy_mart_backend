@@ -1,4 +1,4 @@
-import { getDB } from "../db/connection.js";
+import { getDB } from "../../db/connection.js";
 
 export default class UserService {
     async signUp(newUser) {
