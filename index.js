@@ -18,7 +18,8 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(bodyParser.json())
 dotenv.config();
-const port = process.env.PORT;
+let port = process.env.PORT;
+port = 3000;
 
 
 app.use('/api/users', userRoutes);
