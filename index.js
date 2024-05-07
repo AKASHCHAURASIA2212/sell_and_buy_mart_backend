@@ -19,7 +19,6 @@ app.use(cors(corsOptions))
 app.use(bodyParser.json())
 dotenv.config();
 let port = process.env.PORT;
-port = 80;
 
 
 app.use('/api/users', userRoutes);
@@ -27,6 +26,10 @@ app.use('/api/items', itemRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/mail', mailRoutes);
 app.use('/api/admin', adminRoutes);
+
+app.get('/', (req, res) => {
+    res.status(200).send('S&BM SERVER START');
+});
 
 app.use((req, res) => {
     res.status(404).send('Route not found');
