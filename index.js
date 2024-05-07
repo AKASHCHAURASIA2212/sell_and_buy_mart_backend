@@ -19,7 +19,7 @@ app.use(cors(corsOptions))
 app.use(bodyParser.json())
 dotenv.config();
 let port = process.env.PORT;
-port = 3000;
+port = 80;
 
 
 app.use('/api/users', userRoutes);
