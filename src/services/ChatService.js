@@ -200,6 +200,95 @@ export default class ChatService {
             throw error;
         }
     }
+    async getChatByUserId(user_id) {
+        try {
+
+            console.log(" getChatByParticipants ");
+            const db = getDB();
+            const collection = db.collection('chats')
+            console.log(participantId, user_id);
+            const result = await collection.aggregate([
+                {
+                    $match: {
+                        participents: {
+                            $in: user_id
+                        }
+                    }
+                }
+                , {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'participents',
+                        foreignField: 'user_id',
+                        as: 'user_details'
+                    }
+                }
+                , {
+                    $lookup: {
+                        from: 'items',
+                        localField: 'item_id',
+                        foreignField: 'item_id',
+                        as: 'item_details'
+                    }
+                }
+                , {
+                    $project: {
+                        chat_id: 1,
+                        messages: 1,
+                        chat_started_by: 1,
+                        participents: 1,
+                        user_details: {
+                            user_id: 1,
+                            username: 1,
+                            email: 1,
+                            address: 1,
+                        },
+                        item_details: {
+                            item_id: 1,
+                            item_name: 1,
+                            item_category: 1,
+                        }
+                    }
+                }
+            ]).toArray()
+
+            console.log("------------------- chat by user -------------------------");
+            console.log(result);
+            console.log("------------------- chat by user -------------------------");
+
+
+
+            if (!result) throw new Error('Chat not found');
+
+
+            const seller_chat = [];
+            const buyer_chat = [];
+            const userDetails = []
+            const itemDetails = []
+
+            console.log(result);
+
+            result.forEach(element => {
+                if (element.chat_started_by === user_id) {
+                    seller_chat.push(element);
+                } else {
+                    buyer_chat.push(element);
+                }
+            });
+
+            console.log("------------------- buyer and seller data -------------------------");
+
+            console.log("result chat : ", result);
+            console.log("seller chat : ", seller_chat);
+            console.log("buyer chat : ", buyer_chat);
+
+            console.log("------------------- buyer and seller data -------------------------");
+
+            return { seller_chat, buyer_chat };
+        } catch (error) {
+            throw error;
+        }
+    }
 
     async getChatByParticipantAndItemId(participantId, itemId) {
         try {

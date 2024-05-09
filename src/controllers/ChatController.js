@@ -163,6 +163,60 @@ export class ChatController {
             });
         }
     };
+    async getChatByUserId(req, res) {
+        try {
+            const { user_id } = req.body;
+            // const chats = await Chat.find({ $or: [{ sender: userId }, { receiver: userId }] });
+            let resp = await this.ChatService.getChatByUserId(user_id);
+
+            // console.log(resp, typeof resp.seller_chat);
+            // resp = JSON.parse(resp);
+            console.log(resp);
+
+
+            let userDetails = [];
+            let itemDetails = [];
+
+
+            resp.seller_chat.forEach(element => {
+                userDetails.push(element.participents[0])
+                userDetails.push(element.participents[1])
+                itemDetails.push(element.item_id)
+            })
+            resp.buyer_chat.forEach(element => {
+                userDetails.push(element.participents[0])
+                userDetails.push(element.participents[1])
+                itemDetails.push(element.item_id)
+
+            })
+
+            console.log("userDetails  : ", userDetails);
+            console.log("itemDetails  : ", itemDetails);
+
+            let itemData = await this.ItemService.getItemById(itemDetails)
+
+            let userData = await this.UserService.findByUserID(userDetails)
+
+            console.log(userData);
+            console.log(itemData);
+
+
+            res.status(200).json({
+                data: { resp, itemData, userData },
+                status: 200,
+                message: "chat",
+                error: "none"
+            });
+        } catch (err) {
+            console.error('Error getting chats by user ID:', err);
+            res.status(500).json({
+                data: "",
+                status: 500,
+                message: "Error getting chats by user ID",
+                error: "none"
+            });
+        }
+    };
 
     // Function to get chats by item ID
     async getChatByParticipantAndItemId(req, res) {

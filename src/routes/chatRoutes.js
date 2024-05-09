@@ -17,6 +17,9 @@ chatRoutes.put('/update', (req, res) => {
 chatRoutes.post('/user', (req, res) => {
     chatController.getChatByParticipants(req, res)
 });
+chatRoutes.post('/single', (req, res) => {
+    chatController.getChatByUserId(req, res)
+});
 chatRoutes.post('/item', (req, res) => {
     chatController.getChatByParticipantAndItemId(req, res)
 });
