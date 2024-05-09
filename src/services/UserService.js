@@ -70,7 +70,7 @@ export default class UserService {
         try {
 
             // get db
-            const db = getDB();
+            const db = await getDB();
             // get collection
             const collection = db.collection('users')
             // insert document

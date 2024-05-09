@@ -20,6 +20,10 @@ app.use(bodyParser.json())
 dotenv.config();
 let port = 3000;
 
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+    connectToMongoDB();
+});
 
 app.use('/api/users', userRoutes);
 app.use('/api/items', itemRoutes);
@@ -27,15 +31,11 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/mail', mailRoutes);
 app.use('/api/admin', adminRoutes);
 
-app.get('/', (req, res) => {
-    res.status(200).send('S&BM SERVER START');
-});
-
 app.use((req, res) => {
     res.status(404).send('Route not found');
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-    connectToMongoDB();
+app.get('/', (req, res) => {
+    res.status(200).send('S&BM SERVER START');
 });
+
