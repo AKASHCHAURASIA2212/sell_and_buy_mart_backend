@@ -10,7 +10,7 @@ let connection_url = `mongodb+srv://${user}:${pwd}@cluster0.ok2z1rz.mongodb.net/
 
 let db_connection;
 
-export const connectToMongoDB = () => {
+export const connectToMongoDB = async () => {
     MongoClient.connect(connection_url)
         .then((clientInstance) => {
             db_connection = clientInstance.db();

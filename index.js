@@ -15,7 +15,7 @@ const corsOptions = {
     optionSuccessStatus: 200,
 }
 
-connectToMongoDB();
+await connectToMongoDB();
 
 app.use(cors(corsOptions))
 app.use(bodyParser.json())
