@@ -15,14 +15,14 @@ const corsOptions = {
     optionSuccessStatus: 200,
 }
 
-await connectToMongoDB();
 
 app.use(cors(corsOptions))
 app.use(bodyParser.json())
 dotenv.config();
 let port = process.env.PORT;
 
-app.listen(port, () => {
+app.listen(port, async () => {
+    await connectToMongoDB();
     console.log(`Server is running on http://localhost:${port}`);
 });
 app.use('/api/users', userRoutes);
