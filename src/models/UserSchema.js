@@ -42,6 +42,17 @@ const userSchema = new Schema({
     created_at: {
         type: Date,
         default: new Date().toISOString()
+    },
+    deleted_by: {
+        type: String,
+        required: true,
+        default: ''
+
+    },
+    deleted: {
+        type: String,
+        required: true,
+        default: '0'
     }
 });
 

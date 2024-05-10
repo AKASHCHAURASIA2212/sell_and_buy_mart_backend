@@ -164,10 +164,70 @@ export class ItemController {
     };
 
     // Function to delete an item
+    async approveItem(req, res) {
+        try {
+            const { itemId, approved_by } = req.body;
+            const deletedItem = await this.ItemService.approveItem(itemId, approved_by);
+            if (!deletedItem) {
+                return res.status(404).json({
+                    data: "",
+                    status: 404,
+                    message: "Item not found",
+                    error: "none"
+                });
+            }
+            res.status(200).json({ message: 'Item Approved successfully' });
+            res.status(200).json({
+                data: "",
+                status: 200,
+                message: "Item Approved successfully",
+                error: "none"
+            });
+        } catch (err) {
+            console.error('Error Approving item:', err);
+            res.status(500).json({
+                data: "",
+                status: 500,
+                message: "Error Approving item",
+                error: "none"
+            });
+        }
+    };
+
+    async rejectItem(req, res) {
+        try {
+            const { itemId, rejected_by, message } = req.body;
+            const deletedItem = await this.ItemService.rejectItem(itemId, rejected_by, message);
+            if (!deletedItem) {
+                return res.status(404).json({
+                    data: "",
+                    status: 404,
+                    message: "Item not found",
+                    error: "none"
+                });
+            }
+            res.status(200).json({ message: 'Item Rejected successfully' });
+            res.status(200).json({
+                data: "",
+                status: 200,
+                message: "Item Rejected successfully",
+                error: "none"
+            });
+        } catch (err) {
+            console.error('Error Rejected item:', err);
+            res.status(500).json({
+                data: "",
+                status: 500,
+                message: "Error Rejected item",
+                error: "none"
+            });
+        }
+    };
+
     async deleteItem(req, res) {
         try {
-            const itemId = req.params.itemId;
-            const deletedItem = await this.ItemService.deleteItem(itemId);
+            const { itemId, deleted_by } = req.body;
+            const deletedItem = await this.ItemService.deleteItem(itemId, deleted_by);
             if (!deletedItem) {
                 return res.status(404).json({
                     data: "",

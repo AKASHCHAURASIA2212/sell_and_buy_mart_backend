@@ -14,10 +14,14 @@ userRoutes.post('/signin', (req, res) => {
 userRoutes.post('/update', (req, res) => {
     userController.updateUserDetails(req, res)
 });
+userRoutes.post('/check', (req, res) => {
+    userController.checkUserExist(req, res)
+});
+userRoutes.post('/reset', (req, res) => {
+    userController.resetPassword(req, res)
+});
 userRoutes.post('/:user_id', (req, res) => {
     userController.getUserByID(req, res)
 });
-
-// userRoutes.post('/resetpassword', userController.resetPassword);
 
 export { userRoutes };

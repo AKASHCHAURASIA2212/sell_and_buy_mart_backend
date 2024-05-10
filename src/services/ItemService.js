@@ -31,13 +31,13 @@ export default class ItemService {
             const collection = db.collection('items')
 
 
-            let totalCount = await collection.countDocuments({ status: "available" })
+            let totalCount = await collection.countDocuments({})
             // let pages = Math.ceil(totalCount / limit);
             // if (offset == pages) {
             //     limit = totalCount - (pages * limit - limit);
             // }
 
-            let res = await collection.find({ status: "available" })
+            let res = await collection.find({})
                 .skip((currentPage - 1) * pageSize)
                 .limit(pageSize)
                 .toArray()
@@ -108,23 +108,6 @@ export default class ItemService {
             console.log("something went wrong in findByMail : ", error);
         }
     }
-    async deleteItem(id) {
-        try {
-
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('items')
-            // insert document
-            let res = await collection.updateOne({ "item_id": id }, { $set: { status: "unavailabe" } })
-            // console.log(res);
-
-            return res;
-
-        } catch (error) {
-            console.log("something went wrong in findByMail : ", error);
-        }
-    }
 
     async getItems(limit) {
         try {
@@ -145,6 +128,62 @@ export default class ItemService {
 
         } catch (error) {
             console.log("something went wrong in findByMail : ", error);
+        }
+    }
+
+
+    async approveItem(itemId, approved_by) {
+        try {
+
+            console.log(itemId, approved_by);
+
+            // get db
+            const db = getDB();
+            // get collection
+            const collection = db.collection('items')
+            // insert document
+            let res = await collection.updateOne({ "item_id": itemId }, { $set: { status: "available", approved_by: approved_by } })
+            // console.log(res);
+
+            console.log(res);
+
+            return res;
+
+        } catch (error) {
+            console.log("something went wrong in approveItem : ", error);
+        }
+    }
+
+    async rejectItem(itemId, rejected_by, message) {
+        try {
+
+            // get db
+            const db = getDB();
+            // get collection
+            const collection = db.collection('items')
+            // insert document
+            let res = await collection.updateOne({ "item_id": itemId }, { $set: { status: "rejected", deleted: "1", rejected_by: rejected_by, message: message } })
+            // console.log(res);
+
+            return res;
+
+        } catch (error) {
+            console.log("something went wrong in rejectItem : ", error);
+        }
+    }
+
+    async deleteItem(itemId, deleted_by) {
+        try {
+            // get db
+            const db = getDB();
+            // get collection
+            const collection = db.collection('items')
+            // insert document
+            let res = await collection.updateOne({ "item_id": itemId }, { $set: { status: "unavailable", deleted: "1", deleted_by: deleted_by } })
+            // console.log(res);
+            return res;
+        } catch (error) {
+            console.log("something went wrong in deleteItem : ", error);
         }
     }
 }
