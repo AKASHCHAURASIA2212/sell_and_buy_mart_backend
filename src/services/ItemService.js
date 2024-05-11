@@ -22,10 +22,10 @@ export default class ItemService {
         try {
 
 
-            let totalCount = await Item.countDocuments({ status: 'available' })
+            let totalCount = await Item.countDocuments({})
 
 
-            let res = await Item.find({ status: 'available' })
+            let res = await Item.find({})
                 .sort({ date_entered: -1 })
                 .skip((currentPage - 1) * pageSize)
                 .limit(pageSize)
