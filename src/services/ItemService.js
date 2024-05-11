@@ -1,17 +1,13 @@
 import { getDB } from "../../db/connection.js";
 import mongodb from 'mongodb';
+import { Item } from "../models/ItemSchema.js";
 const ObjectId = mongodb.ObjectId;
 
 export default class ItemService {
     async addItem(newItems) {
         try {
 
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('items')
-            // insert document
-            let res = await collection.insertOne(newItems)
+            let res = await Item.create(newItems)
 
             console.log("New Item Created Succsessfully");
 
@@ -25,22 +21,15 @@ export default class ItemService {
     async getAllItems(pageSize, currentPage) {
         try {
 
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('items')
+
+            let totalCount = await Item.countDocuments({ status: 'available' })
 
 
-            let totalCount = await collection.countDocuments({})
-            // let pages = Math.ceil(totalCount / limit);
-            // if (offset == pages) {
-            //     limit = totalCount - (pages * limit - limit);
-            // }
-
-            let res = await collection.find({})
+            let res = await Item.find({ status: 'available' })
+                .sort({ date_entered: -1 })
                 .skip((currentPage - 1) * pageSize)
                 .limit(pageSize)
-                .toArray()
+
 
             // console.log(total_count);
 
@@ -53,81 +42,52 @@ export default class ItemService {
 
     async getItemsByCategory(category) {
         try {
-
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('items')
-            // insert document
-            let res = await collection.find({ "item_category": category }).toArray(function (err, result) {
-                if (err) throw err;
-                // console.log(result);
-                db.close();
-                return result
-            })
+            console.log(category);
+            let res = await Item.find({ "item_category": category }).sort({ date_entered: -1 })
             // console.log(res);
 
             return res;
 
         } catch (error) {
-            console.log("something went wrong in findByMail : ", error);
+            console.log("something went wrong in getItemsByCategory : ", error);
         }
     }
     async getItemById(id) {
         try {
-
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('items')
-            // insert document
-            // console.log(id, typeof id);
-            let res = await collection.find({ "item_id": { $in: id } }, { "item_id": 1, "item_category": 1, "item_name:": 1 }).toArray()
+            let res = await Item.find({ "item_id": { $in: id } }).sort({ date_entered: -1 })
 
             return res;
 
         } catch (error) {
-            console.log("something went wrong in findByMail : ", error);
+            console.log("something went wrong in getItemById : ", error);
         }
     }
 
     async getItemByUserId(id) {
         try {
+            console.log(id);
+            let res = await Item.find({ "posted_by": { $in: id } }).sort({ date_entered: -1 })
 
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('items')
-            // insert document
-            // console.log(id, typeof id);
-            let res = await collection.find({ "posted_by": { $in: id } }, { "item_id": 1, "item_category": 1, "item_name:": 1 }).toArray()
-
+            console.log(res);
             return res;
 
         } catch (error) {
-            console.log("something went wrong in findByMail : ", error);
+            console.log("something went wrong in getItemByUserId : ", error);
         }
     }
 
     async getItems(limit) {
         try {
+            let res = await Item.find({})
+                .sort({ date_entered: -1 })
+                .limit(limit)
 
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('items')
-
-            // insert document
-            let res = await collection.find({})
-                .sort({ created_at: -1 })
-                .limit(limit).toArray()
-
-            let totalCount = await collection.countDocuments()
+            let totalCount = await Item.countDocuments()
 
             return { res, totalCount };
 
         } catch (error) {
-            console.log("something went wrong in findByMail : ", error);
+            console.log("something went wrong in getItems : ", error);
         }
     }
 
@@ -137,12 +97,7 @@ export default class ItemService {
 
             console.log(itemId, approved_by);
 
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('items')
-            // insert document
-            let res = await collection.updateOne({ "item_id": itemId }, { $set: { status: "available", approved_by: approved_by } })
+            let res = await Item.updateOne({ "item_id": itemId }, { $set: { status: "available", approved_by: approved_by } })
             // console.log(res);
 
             console.log(res);
@@ -156,13 +111,7 @@ export default class ItemService {
 
     async rejectItem(itemId, rejected_by, message) {
         try {
-
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('items')
-            // insert document
-            let res = await collection.updateOne({ "item_id": itemId }, { $set: { status: "rejected", deleted: "1", rejected_by: rejected_by, message: message } })
+            let res = await Item.updateOne({ "item_id": itemId }, { $set: { status: "rejected", deleted: "1", rejected_by: rejected_by, message: message } })
             // console.log(res);
 
             return res;
@@ -174,12 +123,7 @@ export default class ItemService {
 
     async deleteItem(itemId, deleted_by) {
         try {
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('items')
-            // insert document
-            let res = await collection.updateOne({ "item_id": itemId }, { $set: { status: "unavailable", deleted: "1", deleted_by: deleted_by } })
+            let res = await Item.updateOne({ "item_id": itemId }, { $set: { status: "unavailable", deleted: "1", deleted_by: deleted_by } })
             // console.log(res);
             return res;
         } catch (error) {

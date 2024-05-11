@@ -5,12 +5,7 @@ export default class MailService {
     // Controller function to get all mail messages
     async addMail(newMail) {
         try {
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('mails')
-
-            const allMail = await collection.insertOne(newMail);
+            const allMail = await Mail.create(newMail);
             return allMail
         } catch (err) {
             // res.status(500).json({ message: err.message });
@@ -23,15 +18,10 @@ export default class MailService {
         try {
 
             console.log(pageSize, currentPage);
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('mails')
-
-            let totalCount = await collection.countDocuments({})
+            let totalCount = await Mail.countDocuments({})
 
 
-            const allMail = await collection.aggregate([
+            const allMail = await Mail.aggregate([
                 {
                     $match: {
                         sentTo: 'admin'
@@ -61,12 +51,7 @@ export default class MailService {
             ])
                 .skip((currentPage - 1) * pageSize)
                 .limit(pageSize)
-                .toArray();
 
-
-            // const allMail = await collection.find({}).skip((currentPage - 1) * pageSize)
-            //     .limit(pageSize)
-            //     .toArray();
             return { allMail, totalCount }
         } catch (err) {
             console.log(err);
@@ -77,12 +62,8 @@ export default class MailService {
     // Controller function to get mail messages by user ID
     async getMailByUserId(userId) {
         try {
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('mails')
 
-            const userMail = await collection.find({ sentBy: userId });
+            const userMail = await Mail.find({ sentBy: userId });
             res.json(userMail);
         } catch (err) {
             res.status(500).json({ message: err.message });
@@ -92,12 +73,7 @@ export default class MailService {
     // Controller function to get mail messages by sender
     async getMailBySendBy(senderName) {
         try {
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('mails')
-
-            const senderMail = await collection.find({ sentBy: senderName });
+            const senderMail = await Mail.find({ sentBy: senderName });
             res.json(senderMail);
         } catch (err) {
             res.status(500).json({ message: err.message });
@@ -107,12 +83,7 @@ export default class MailService {
     // Controller function to get mail messages by recipient
     async getMailBySendTo(recipientName) {
         try {
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('mails')
-
-            const recipientMail = await collection.find({ sentTo: recipientName });
+            const recipientMail = await Mail.find({ sentTo: recipientName });
             res.json(recipientMail);
         } catch (err) {
             res.status(500).json({ message: err.message });
@@ -122,15 +93,9 @@ export default class MailService {
     async getMails(limit) {
         try {
 
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('mails')
+            let res = await Mail.find().sort({ dateEntered: -1 }).limit(limit)
 
-            // insert document
-            let res = await collection.find().sort({ dateEntered: -1 }).limit(limit).toArray()
-
-            let totalCount = await collection.countDocuments()
+            let totalCount = await Mail.countDocuments()
 
             return { res, totalCount };
 

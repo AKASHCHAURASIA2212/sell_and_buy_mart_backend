@@ -1,24 +1,27 @@
-import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 dotenv.config();
 
-let pwd = process.env.DB_PASS
+// Define an asynchronous function to establish a MongoDB connection
+async function connectToMongoDB() {
+    // Retrieve MongoDB connection details from environment variables
+    const username = process.env.DB_USER; // MongoDB username
+    const password = process.env.DB_PASS; // MongoDB password
+    const url = process.env.MONGO_DB_URL; // MongoDB URL
 
-let user = process.env.DB_USER
+    // Construct the MongoDB connection URI with username and password
+    const mongoURI = `mongodb+srv://${username}:${password}@${url}/?retryWrites=true&w=majority`;
 
-let connection_url = `mongodb+srv://${user}:${pwd}@cluster0.ok2z1rz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
+    // Attempt to connect to the MongoDB database using Mongoose
+    await mongoose.connect(mongoURI);
 
-let db_connection;
-
-export const connectToMongoDB = async () => {
-    MongoClient.connect(connection_url)
-        .then((clientInstance) => {
-            db_connection = clientInstance.db();
-            console.log("MongoDB is Connected");
-        }).catch((err) => {
-            console.log("Error in Connected To Mongo DB : ", err);
-        })
+    // Log a success message if the connection is established
+    console.log("MongoDB connection is successful");
 }
+
+// Export the 'connect' function for use in your application
+export { connectToMongoDB };
+
 export const getDB = () => {
     return db_connection;
 }

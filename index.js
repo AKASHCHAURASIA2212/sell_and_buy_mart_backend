@@ -8,6 +8,8 @@ import { mailRoutes } from './src/routes/mailRoutes.js';
 import { adminRoutes } from './src/routes/adminRoutes.js';
 import { connectToMongoDB } from './db/connection.js';
 import dotenv from "dotenv";
+
+await connectToMongoDB();
 const app = express();
 const corsOptions = {
     origin: '*',
@@ -22,7 +24,6 @@ dotenv.config();
 let port = process.env.PORT;
 
 app.listen(port, async () => {
-    await connectToMongoDB();
     console.log(`Server is running on http://localhost:${port}`);
 });
 app.use('/api/users', userRoutes);

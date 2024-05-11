@@ -163,6 +163,7 @@ export class ChatController {
             });
         }
     };
+
     async getChatByUserId(req, res) {
         try {
             const { user_id } = req.body;

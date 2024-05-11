@@ -37,7 +37,6 @@ const userSchema = new Schema({
     },
     user_img: {
         type: String,
-        required: true
     },
     created_at: {
         type: Date,
@@ -45,13 +44,11 @@ const userSchema = new Schema({
     },
     deleted_by: {
         type: String,
-        required: true,
         default: ''
 
     },
     deleted: {
         type: String,
-        required: true,
         default: '0'
     }
 });

@@ -10,12 +10,7 @@ export default class ChatService {
     async addNewChat(newChat) {
         try {
 
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('chats')
-            // insert document
-            let res = await collection.insertOne(newChat)
+            let res = await Chat.create(newChat)
 
             console.log("New Chat Created Succsessfully");
 
@@ -30,16 +25,7 @@ export default class ChatService {
         try {
 
 
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('chats')
-            // insert document
-
-            // Find the chat by ID
-
-            // const chat = await collection.find({ "chat_id": chatId });
-            const result = await collection.updateOne(
+            const result = await Chat.updateOne(
                 { "chat_id": chatId },
                 {
                     $push: {
@@ -72,14 +58,6 @@ export default class ChatService {
     async updateChat(chatId, messageId, newMessage) {
         try {
 
-
-
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('chats')
-            // insert document
-
             const filter = {
                 "chat_id": chatId,
                 "messages_id": messageId
@@ -94,7 +72,7 @@ export default class ChatService {
                 }
             };
 
-            const result = await collection.updateOne(filter, update);
+            const result = await Chat.updateOne(filter, update);
             if (!result) {
                 return res.status(404).json({ error: 'Message not found in chat' });
             }
@@ -115,10 +93,8 @@ export default class ChatService {
         try {
 
             console.log(" getChatByParticipants ");
-            const db = getDB();
-            const collection = db.collection('chats')
             console.log(participantId, user_id);
-            const result = await collection.aggregate([
+            const result = await Chat.aggregate([
                 {
                     $match: {
                         participents: {
@@ -161,7 +137,7 @@ export default class ChatService {
                         }
                     }
                 }
-            ]).toArray()
+            ])
 
             console.log("------------------- chat by user -------------------------");
             console.log(result);
@@ -204,10 +180,8 @@ export default class ChatService {
         try {
 
             console.log(" getChatByParticipants ");
-            const db = getDB();
-            const collection = db.collection('chats')
             console.log(participantId, user_id);
-            const result = await collection.aggregate([
+            const result = await Chat.aggregate([
                 {
                     $match: {
                         participents: {
@@ -250,7 +224,7 @@ export default class ChatService {
                         }
                     }
                 }
-            ]).toArray()
+            ])
 
             console.log("------------------- chat by user -------------------------");
             console.log(result);
@@ -293,34 +267,28 @@ export default class ChatService {
     async getChatByParticipantAndItemId(participantId, itemId) {
         try {
 
-
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('chats')
-            // insert document
-
             console.log(participantId, itemId);
 
 
-            const chat = await collection.find({
+            const chat = await Chat.find({
                 participents: { $all: participantId },
                 item_id: itemId
-            }).toArray(function (err, result) {
-                if (err) throw err;
+            })
+            // .toArray(function (err, result) {
+            //     if (err) throw err;
 
-                console.log(result);
+            //     console.log(result);
 
-                let chats = result.map((chat) => {
-                    let arr1 = chat.participents;
-                    let arr2 = participantId;
-                    if (arr1.length === arr2.length && arr1.every((element, index) => element === arr2[index])) {
-                        return chat;
-                    };
-                })
+            //     let chats = result.map((chat) => {
+            //         let arr1 = chat.participents;
+            //         let arr2 = participantId;
+            //         if (arr1.length === arr2.length && arr1.every((element, index) => element === arr2[index])) {
+            //             return chat;
+            //         };
+            //     })
 
-                return chats
-            }); // Populate the 'participants' field with only the 'username' property
+            //     return chats
+            // }); // Populate the 'participants' field with only the 'username' property
             console.log("--------------------------------------------");
             console.log(chat);
             console.log("--------------------------------------------");
@@ -332,13 +300,8 @@ export default class ChatService {
     }
     async getChatByChatId(chatID) {
         try {
-            // get db
-            const db = getDB();
-            // get collection
-            const collection = db.collection('chats')
-            // insert document
             console.log(chatID);
-            const chat = await collection.find({ chat_id: chatID }, { messages: 1 }).toArray();
+            const chat = await Chat.find({ chat_id: chatID });
             if (!chat) throw new Error('Chat not found');
             return chat;
         } catch (error) {
@@ -351,10 +314,8 @@ export default class ChatService {
         try {
 
             console.log(" getChatByParticipants ");
-            const db = getDB();
-            const collection = db.collection('chats')
             console.log(user_id);
-            const result = await collection.aggregate([
+            const result = await Chat.aggregate([
                 {
                     $match: {
                         participents: {
@@ -397,7 +358,7 @@ export default class ChatService {
                         }
                     }
                 }
-            ]).toArray()
+            ])
 
             console.log("------------------- chat by user -------------------------");
             console.log(result);

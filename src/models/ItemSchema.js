@@ -37,17 +37,14 @@ const itemSchema = new Schema({
     },
     country: {
         type: String,
-        required: true,
         default: 'India'
     },
     city: {
         type: String,
-        required: true,
         default: ''
     },
     address: {
         type: String,
-        required: true,
         default: ''
     },
     date_entered: {
@@ -70,27 +67,22 @@ const itemSchema = new Schema({
     },
     deleted: {
         type: String,
-        required: true,
         default: '0'
     },
     deleted_by: {
         type: String,
-        required: true,
         default: ''
     },
     approved_by: {
         type: String,
-        required: true,
         default: ''
     },
     rejected_by: {
         type: String,
-        required: true,
         default: ''
     },
     message: {
         type: String,
-        required: true,
         default: ''
     },
 });

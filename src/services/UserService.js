@@ -2,12 +2,11 @@ import { getDB } from "../../db/connection.js";
 import { sendEmails } from "../../mailer/mailer.js";
 import weeklyNewsletter from "../../templates/weeklyNewsletter.js";
 import welcome from "../../templates/welcome.js";
+import { User } from "../models/UserSchema.js";
 export default class UserService {
     async signUp(newUser) {
         try {
-            const db = getDB();
-            const collection = db.collection('users')
-            let res = await collection.insertOne(newUser)
+            let res = await User.create(newUser)
             console.log("New User Created Succsessfully");
             sendEmails([newUser.email], "Greetings", welcome(newUser.username))
             console.log(res);
@@ -19,9 +18,7 @@ export default class UserService {
 
     async signIn(email, password) {
         try {
-            const db = getDB();
-            const collection = db.collection('users')
-            let res = await collection.findOne({ "email": email, "password": password })
+            let res = await User.findOne({ "email": email, "password": password })
             return res;
         } catch (error) {
             console.log("something went wrong in signIn : ", error);
@@ -30,9 +27,7 @@ export default class UserService {
 
     async updateUserDetails(username, email, phone, address, role, user_id) {
         try {
-            const db = getDB();
-            const collection = db.collection('users')
-            let res = await collection.updateOne(
+            let res = await User.updateOne(
                 { user_id: user_id },
                 {
                     $set: {
@@ -52,9 +47,7 @@ export default class UserService {
 
     async findByMail(email) {
         try {
-            const db = await getDB();
-            const collection = db.collection('users')
-            let res = await collection.findOne({ "email": email })
+            let res = await User.findOne({ "email": email })
             return res;
         } catch (error) {
             console.log("something went wrong in findByMail : ", error);
@@ -64,9 +57,7 @@ export default class UserService {
     async findByUserID(user_id) {
         try {
             console.log(user_id);
-            const db = getDB();
-            const collection = db.collection('users')
-            let res = await collection.find({ "user_id": { $in: user_id } }).toArray()
+            let res = await User.find({ "user_id": { $in: user_id } })
             return res;
         } catch (error) {
             console.log("something went wrong in findByMail : ", error);
@@ -75,14 +66,14 @@ export default class UserService {
 
     async getUsers(pageSize, currentPage) {
         try {
-            const db = getDB();
-            const collection = db.collection('users')
-            let res = await collection.find()
+
+            let res = await User.find({})
                 .sort({ created_at: -1 })
                 .skip((currentPage - 1) * pageSize)
                 .limit(pageSize)
-                .toArray()
-            let totalCount = await collection.countDocuments()
+
+            let totalCount = await User.countDocuments()
+
             return { res, totalCount };
         } catch (error) {
             console.log("something went wrong in findByMail : ", error);
@@ -91,9 +82,7 @@ export default class UserService {
 
     async deleteUser(userId, deleted_by) {
         try {
-            const db = getDB();
-            const collection = db.collection('users')
-            let res = await collection.updateOne({ "user_id": userId }, { $set: { deleted: "1", deleted_by: deleted_by } })
+            let res = await User.updateOne({ "user_id": userId }, { $set: { deleted: "1", deleted_by: deleted_by } })
             return res;
         } catch (error) {
             console.log("something went wrong in deleteUser : ", error);
@@ -102,9 +91,7 @@ export default class UserService {
 
     async resetPassword(userId, Password) {
         try {
-            const db = getDB();
-            const collection = db.collection('users')
-            let res = await collection.updateOne({ "user_id": userId }, { $set: { password: Password } })
+            let res = await User.updateOne({ "user_id": userId }, { $set: { password: Password } })
             return res;
         } catch (error) {
             console.log("something went wrong in resetPassword : ", error);
