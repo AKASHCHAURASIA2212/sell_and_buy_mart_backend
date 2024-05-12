@@ -2,25 +2,18 @@ import { Mail } from "../models/MailSchema.js";
 import { getDB } from "../../db/connection.js";
 export default class MailService {
 
-    // Controller function to get all mail messages
     async addMail(newMail) {
         try {
             const allMail = await Mail.create(newMail);
             return allMail
         } catch (err) {
-            // res.status(500).json({ message: err.message });
             console.log(err);
             return false
         }
     };
-    // Controller function to get all mail messages
     async getAllMail(currentPage, pageSize) {
         try {
-
-            console.log(pageSize, currentPage);
             let totalCount = await Mail.countDocuments({})
-
-
             const allMail = await Mail.aggregate([
                 {
                     $match: {
@@ -51,7 +44,6 @@ export default class MailService {
             ])
                 .skip((currentPage - 1) * pageSize)
                 .limit(pageSize)
-
             return { allMail, totalCount }
         } catch (err) {
             console.log(err);
@@ -59,10 +51,8 @@ export default class MailService {
         }
     };
 
-    // Controller function to get mail messages by user ID
     async getMailByUserId(userId) {
         try {
-
             const userMail = await Mail.find({ sentBy: userId });
             res.json(userMail);
         } catch (err) {
@@ -92,11 +82,8 @@ export default class MailService {
 
     async getMails(limit) {
         try {
-
             let res = await Mail.find().sort({ dateEntered: -1 }).limit(limit)
-
             let totalCount = await Mail.countDocuments()
-
             return { res, totalCount };
 
         } catch (error) {

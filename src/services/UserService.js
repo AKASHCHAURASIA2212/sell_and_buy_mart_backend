@@ -7,7 +7,6 @@ export default class UserService {
     async signUp(newUser) {
         try {
             let res = await User.create(newUser)
-            console.log("New User Created Succsessfully");
             sendEmails([newUser.email], "Greetings", welcome(newUser.username))
             console.log(res);
             return res;
@@ -25,7 +24,7 @@ export default class UserService {
         }
     }
 
-    async updateUserDetails(username, email, phone, address, role, user_id) {
+    async updateUserDetails(username, email, phone, address, role, user_id, user_img) {
         try {
             let res = await User.updateOne(
                 { user_id: user_id },
@@ -35,7 +34,8 @@ export default class UserService {
                         email: email,
                         phone: phone,
                         address: address,
-                        role: role
+                        role: role,
+                        user_img: user_img
                     }
                 }
             )
@@ -47,7 +47,7 @@ export default class UserService {
 
     async findByMail(email) {
         try {
-            let res = await User.findOne({ "email": email })
+            let res = await User.findOne({ "email": email, "deleted": '0' })
             return res;
         } catch (error) {
             console.log("something went wrong in findByMail : ", error);
@@ -56,7 +56,6 @@ export default class UserService {
 
     async findByUserID(user_id) {
         try {
-            console.log(user_id);
             let res = await User.find({ "user_id": { $in: user_id } })
             return res;
         } catch (error) {
@@ -66,14 +65,11 @@ export default class UserService {
 
     async getUsers(pageSize, currentPage) {
         try {
-
             let res = await User.find({})
                 .sort({ created_at: -1 })
                 .skip((currentPage - 1) * pageSize)
                 .limit(pageSize)
-
             let totalCount = await User.countDocuments()
-
             return { res, totalCount };
         } catch (error) {
             console.log("something went wrong in findByMail : ", error);
@@ -88,7 +84,6 @@ export default class UserService {
             console.log("something went wrong in deleteUser : ", error);
         }
     }
-
     async resetPassword(userId, Password) {
         try {
             let res = await User.updateOne({ "user_id": userId }, { $set: { password: Password } })

@@ -20,6 +20,10 @@ itemRoutes.post('/user', (req, res) => {
     itemController.getItemByUserId(req, res)
 });
 
+itemRoutes.post('/update', (req, res) => {
+    itemController.updateItemDetails(req, res)
+});
+
 itemRoutes.post('/add', (req, res) => {
     itemController.addNewItem(req, res)
 });

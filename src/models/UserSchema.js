@@ -24,11 +24,23 @@ const userSchema = new Schema({
     },
     phone: {
         type: String,
-        required: true
+        default: ''
     },
     address: {
         type: String,
-        required: true
+        default: ''
+    },
+    country: {
+        type: String,
+        default: ''
+    },
+    city: {
+        type: String,
+        default: ''
+    },
+    street: {
+        type: String,
+        default: ''
     },
     role: {
         type: String,
@@ -37,6 +49,7 @@ const userSchema = new Schema({
     },
     user_img: {
         type: String,
+        default: ''
     },
     created_at: {
         type: Date,
@@ -45,7 +58,6 @@ const userSchema = new Schema({
     deleted_by: {
         type: String,
         default: ''
-
     },
     deleted: {
         type: String,

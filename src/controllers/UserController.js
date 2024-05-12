@@ -19,32 +19,44 @@ export class UserController {
         try {
 
             console.log(req.body);
-            // Hash the password
-            const hashedPassword = bcrypt.hashSync(req.body.password, 13);
+            const resp = await this.UserService.findByMail(req.body.email)
 
-            // Create a new user object
-            const newUser = new User({
-                user_id: generateMongoId(),
-                username: req.body.username,
-                email: req.body.email,
-                password: hashedPassword,
-                phone: req.body.phone,
-                address: req.body.address
-            });
+            if (resp) {
+                return res.status(400).send({
+                    data: "",
+                    status: 400,
+                    message: "User Alredy Exist With This Email",
+                    error: ""
+                })
+            }
+            else {
+                // Hash the password
+                const hashedPassword = bcrypt.hashSync(req.body.password, 13);
 
-            // Save the new user to the database
-            const resp = await this.UserService.signUp(newUser);
+                // Create a new user object
+                const newUser = new User({
+                    user_id: generateMongoId(),
+                    username: req.body.username,
+                    email: req.body.email,
+                    password: hashedPassword,
+                    user_img: ''
+                });
 
-            res.status(201).json({
-                data: {
-                    user_id: newUser.user_id,
-                    username: newUser.username,
-                    role: newUser.role
-                },
-                status: 201,
-                message: "New User Created !!!",
-                error: "none"
-            });
+                // Save the new user to the database
+                const resp = await this.UserService.signUp(newUser);
+                console.log(resp);
+                res.status(201).json({
+                    data: {
+                        user_id: newUser.user_id,
+                        username: newUser.username,
+                        role: newUser.role
+                    },
+                    status: 201,
+                    message: "New User Created !!!",
+                    error: "none"
+                });
+            }
+
         } catch (err) {
             console.error('Error signing up:', err);
             res.status(500).json({
@@ -83,11 +95,11 @@ export class UserController {
                         error: ""
                     })
                 } else {
-                    console.error('Error Password Not Matched:');
+                    console.error('Invalid Password');
                     res.status(400).json({
                         data: "",
                         status: 400,
-                        message: "Error Password Not Matched",
+                        message: "Invalid Password",
                         error: ""
                     });
                 }
@@ -104,6 +116,7 @@ export class UserController {
 
             let user_id = req.params.user_id;
             const resp = await this.UserService.findByUserID([user_id])
+            console.log(resp);
             res.status(200).send({
                 data: {
                     data: resp[0]
@@ -122,10 +135,10 @@ export class UserController {
         try {
             console.log("inside updateUserDetails");
 
-
-            let { username, email, phone, address, role, user_id } = req.body;
-            const result = await this.UserService.updateUserDetails(username, email, phone, address, role, user_id)
-            const resp = await this.UserService.findByUserID([user_id])
+            console.log(req.body);
+            let { username, email, phone, address, role, userId, user_img } = req.body;
+            const result = await this.UserService.updateUserDetails(username, email, phone, address, role, userId, user_img)
+            const resp = await this.UserService.findByUserID([userId])
             res.status(200).send({
                 data: {
                     data: resp[0]

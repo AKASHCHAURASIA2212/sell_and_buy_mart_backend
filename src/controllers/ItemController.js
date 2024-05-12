@@ -51,6 +51,42 @@ export class ItemController {
         }
     };
 
+    async updateItemDetails(req, res) {
+        try {
+
+            const { item_id, item_name, item_category, item_desc, item_price, location, img } = req.body;
+
+            console.log(req.body);
+
+            // let data = {
+            //     item_category,
+            //     item_name,
+            //     item_price,
+            //     item_desc,
+            //     location,
+            //     posted_by,
+            //     img
+            // }
+
+            const savedItem = await this.ItemService.updateItemDetails(item_id, item_name, item_category, item_desc, item_price, location, img);
+
+            res.status(201).json({
+                data: savedItem,
+                status: 201,
+                message: "Item updated !!!",
+                error: "none"
+            });
+        } catch (err) {
+            console.error('Error Updating item:', err);
+            res.status(500).json({
+                data: "",
+                status: 500,
+                message: "Error Updating item",
+                error: "none"
+            });
+        }
+    };
+
     async getAllItems(req, res) {
         try {
 
@@ -59,7 +95,7 @@ export class ItemController {
 
             console.log(limit, offset);
 
-            const items = await this.ItemService.getAllItems(Number(limit), Number(offset));
+            const items = await this.ItemService.getAllItems(Number(limit), Number(offset), { status: 'available' });
             console.log(items);
             res.status(200).json({
                 data: items,

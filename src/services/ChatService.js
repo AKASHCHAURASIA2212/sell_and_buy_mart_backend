@@ -1,19 +1,10 @@
-import { getDB } from "../../db/connection.js";
-import mongodb from 'mongodb';
-import { Chat } from '../models/ChatSchema.js'; // Import the Chat model
-import { UserController } from '../controllers/UserController.js'
-
-let userController = new UserController();
+import { Chat } from '../models/ChatSchema.js';
 
 export default class ChatService {
 
     async addNewChat(newChat) {
         try {
-
             let res = await Chat.create(newChat)
-
-            console.log("New Chat Created Succsessfully");
-
             return res;
 
         } catch (error) {
@@ -23,8 +14,6 @@ export default class ChatService {
 
     async insertChat(chatId, content, sendBy, message_id) {
         try {
-
-
             const result = await Chat.updateOne(
                 { "chat_id": chatId },
                 {
@@ -40,29 +29,22 @@ export default class ChatService {
                     }
                 }
             );
-
-
             if (result.nModified === 0) {
                 throw new Error('Failed to insert message');
             }
-
-            // res.status(200).json(result);
             return result;
         } catch (err) {
             console.error('Error inserting chat message:', err);
-            // res.status(500).json({ error: 'Internal server error' });
             return err
         }
     };
 
     async updateChat(chatId, messageId, newMessage) {
         try {
-
             const filter = {
                 "chat_id": chatId,
                 "messages_id": messageId
             };
-
             const update = {
                 $set: {
                     "messages": {
@@ -71,27 +53,19 @@ export default class ChatService {
                     }
                 }
             };
-
             const result = await Chat.updateOne(filter, update);
             if (!result) {
                 return res.status(404).json({ error: 'Message not found in chat' });
             }
-
-            console.log(result);
-
-
-
             return result
         } catch (err) {
             console.error('Error updating chat message:', err);
-            // res.status(500).json({ error: 'Internal server error' });
             return err
         }
     };
 
     async getChatByParticipants(participantId, user_id) {
         try {
-
             console.log(" getChatByParticipants ");
             console.log(participantId, user_id);
             const result = await Chat.aggregate([
@@ -138,23 +112,9 @@ export default class ChatService {
                     }
                 }
             ])
-
-            console.log("------------------- chat by user -------------------------");
-            console.log(result);
-            console.log("------------------- chat by user -------------------------");
-
-
-
             if (!result) throw new Error('Chat not found');
-
-
             const seller_chat = [];
             const buyer_chat = [];
-            const userDetails = []
-            const itemDetails = []
-
-            console.log(result);
-
             result.forEach(element => {
                 if (element.chat_started_by === user_id) {
                     seller_chat.push(element);
@@ -162,15 +122,6 @@ export default class ChatService {
                     buyer_chat.push(element);
                 }
             });
-
-            console.log("------------------- buyer and seller data -------------------------");
-
-            console.log("result chat : ", result);
-            console.log("seller chat : ", seller_chat);
-            console.log("buyer chat : ", buyer_chat);
-
-            console.log("------------------- buyer and seller data -------------------------");
-
             return { seller_chat, buyer_chat };
         } catch (error) {
             throw error;
@@ -225,23 +176,9 @@ export default class ChatService {
                     }
                 }
             ])
-
-            console.log("------------------- chat by user -------------------------");
-            console.log(result);
-            console.log("------------------- chat by user -------------------------");
-
-
-
             if (!result) throw new Error('Chat not found');
-
-
             const seller_chat = [];
             const buyer_chat = [];
-            const userDetails = []
-            const itemDetails = []
-
-            console.log(result);
-
             result.forEach(element => {
                 if (element.chat_started_by === user_id) {
                     seller_chat.push(element);
@@ -249,15 +186,6 @@ export default class ChatService {
                     buyer_chat.push(element);
                 }
             });
-
-            console.log("------------------- buyer and seller data -------------------------");
-
-            console.log("result chat : ", result);
-            console.log("seller chat : ", seller_chat);
-            console.log("buyer chat : ", buyer_chat);
-
-            console.log("------------------- buyer and seller data -------------------------");
-
             return { seller_chat, buyer_chat };
         } catch (error) {
             throw error;
@@ -266,32 +194,10 @@ export default class ChatService {
 
     async getChatByParticipantAndItemId(participantId, itemId) {
         try {
-
-            console.log(participantId, itemId);
-
-
             const chat = await Chat.find({
                 participents: { $all: participantId },
                 item_id: itemId
             })
-            // .toArray(function (err, result) {
-            //     if (err) throw err;
-
-            //     console.log(result);
-
-            //     let chats = result.map((chat) => {
-            //         let arr1 = chat.participents;
-            //         let arr2 = participantId;
-            //         if (arr1.length === arr2.length && arr1.every((element, index) => element === arr2[index])) {
-            //             return chat;
-            //         };
-            //     })
-
-            //     return chats
-            // }); // Populate the 'participants' field with only the 'username' property
-            console.log("--------------------------------------------");
-            console.log(chat);
-            console.log("--------------------------------------------");
             if (!chat) throw new Error('Chat not found');
             return chat;
         } catch (error) {
@@ -300,7 +206,6 @@ export default class ChatService {
     }
     async getChatByChatId(chatID) {
         try {
-            console.log(chatID);
             const chat = await Chat.find({ chat_id: chatID });
             if (!chat) throw new Error('Chat not found');
             return chat;
@@ -312,9 +217,6 @@ export default class ChatService {
 
     async getChatByUserId(user_id) {
         try {
-
-            console.log(" getChatByParticipants ");
-            console.log(user_id);
             const result = await Chat.aggregate([
                 {
                     $match: {
@@ -359,23 +261,9 @@ export default class ChatService {
                     }
                 }
             ])
-
-            console.log("------------------- chat by user -------------------------");
-            console.log(result);
-            console.log("------------------- chat by user -------------------------");
-
-
-
             if (!result) throw new Error('Chat not found');
-
-
             const seller_chat = [];
             const buyer_chat = [];
-            const userDetails = []
-            const itemDetails = []
-
-            console.log(result);
-
             result.forEach(element => {
                 if (element.chat_started_by === user_id) {
                     seller_chat.push(element);
@@ -383,15 +271,6 @@ export default class ChatService {
                     buyer_chat.push(element);
                 }
             });
-
-            console.log("------------------- buyer and seller data -------------------------");
-
-            console.log("result chat : ", result);
-            console.log("seller chat : ", seller_chat);
-            console.log("buyer chat : ", buyer_chat);
-
-            console.log("------------------- buyer and seller data -------------------------");
-
             return { seller_chat, buyer_chat };
         } catch (error) {
             throw error;
