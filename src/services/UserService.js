@@ -24,18 +24,22 @@ export default class UserService {
         }
     }
 
-    async updateUserDetails(username, email, phone, address, role, user_id, user_img) {
+    async updateUserDetails(username, dob, email, phone, country, city, street, landmark, role, userId, user_img) {
         try {
             let res = await User.updateOne(
-                { user_id: user_id },
+                { user_id: userId },
                 {
                     $set: {
                         username: username,
+                        dob: dob,
                         email: email,
                         phone: phone,
-                        address: address,
                         role: role,
-                        user_img: user_img
+                        user_img: user_img,
+                        country: country,
+                        city: city,
+                        street: street,
+                        landmark: landmark,
                     }
                 }
             )

@@ -1,5 +1,9 @@
 import { Mail } from "../models/MailSchema.js";
 import { getDB } from "../../db/connection.js";
+import weeklyTemp from "../../templates/weeklyNewsletter.js";
+import { sendEmails } from "../../mailer/mailer.js";
+
+
 export default class MailService {
 
     async addMail(newMail) {
@@ -85,6 +89,28 @@ export default class MailService {
             let res = await Mail.find().sort({ dateEntered: -1 }).limit(limit)
             let totalCount = await Mail.countDocuments()
             return { res, totalCount };
+
+        } catch (error) {
+            console.log("something went wrong in findByMail : ", error);
+        }
+    }
+    async sendMail(email, subject, message) {
+        try {
+
+            sendEmails([email], subject, message)
+
+            return { status: "send" };
+
+        } catch (error) {
+            console.log("something went wrong in sendMail : ", error);
+        }
+    }
+    async sendMailNewsLatter(email) {
+        try {
+
+            sendEmails([email], "Greetings", weeklyTemp())
+
+            return { status: "send" };
 
         } catch (error) {
             console.log("something went wrong in findByMail : ", error);

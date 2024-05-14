@@ -10,6 +10,16 @@ mailRoutes.get('/:page/:limit', (req, res) => {
     mailController.getAllMail(req, res)
 });
 
+
+// Route to get mail messages by user ID
+mailRoutes.post('/newsletter', (req, res) => {
+    mailController.sendMailNewsLatter(req, res)
+});
+
+mailRoutes.post('/send', (req, res) => {
+    mailController.sendMail(req, res)
+});
+
 mailRoutes.post('/:userId', (req, res) => {
     mailController.addMail(req, res)
 });
@@ -19,6 +29,7 @@ mailRoutes.post('/:userId', (req, res) => {
 // mailRoutes.get('/user/:userId', (req, res) => {
 //     mailController.getMailByUserId
 // });
+
 
 // // Route to get mail messages by sender
 // mailRoutes.get('/sender/:senderName', (req, res) => {

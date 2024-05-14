@@ -58,16 +58,6 @@ export class ItemController {
 
             console.log(req.body);
 
-            // let data = {
-            //     item_category,
-            //     item_name,
-            //     item_price,
-            //     item_desc,
-            //     location,
-            //     posted_by,
-            //     img
-            // }
-
             const savedItem = await this.ItemService.updateItemDetails(item_id, item_name, item_category, item_desc, item_price, location, img);
 
             res.status(201).json({
@@ -92,10 +82,32 @@ export class ItemController {
 
             let limit = req.params.limit;
             let offset = req.params.page;
+            let search = req.params.search;
+            let category = req.params.category;
+
+            console.log(req.params);
+
+            let filter = { status: 'available' }
+
+            if (category != 'empty') {
+                filter.item_category = category;
+            }
+
+            if (search != 'empty') {
+
+                const regexPattern = new RegExp(`.*${search}.*`, "i");
+                filter.item_name = { $regex: regexPattern }
+            };
+
+
+
+
 
             console.log(limit, offset);
 
-            const items = await this.ItemService.getAllItems(Number(limit), Number(offset), { status: 'available' });
+
+
+            const items = await this.ItemService.getAllItems(Number(limit), Number(offset), filter);
             console.log(items);
             res.status(200).json({
                 data: items,
@@ -117,6 +129,7 @@ export class ItemController {
     // Function to get items by category
     async getItemsByCategory(req, res) {
         try {
+            console.log("getItemsByCategory");
             const category = req.params.category;
             const items = await this.ItemService.getItemsByCategory(category);
             // console.log(items);

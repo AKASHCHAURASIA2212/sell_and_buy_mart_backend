@@ -14,19 +14,6 @@ export class MailController {
 
             console.log(mails);
 
-            // let userDetails = [];
-
-            // chat.forEach((item) => {
-            //     userDetails.push(item.participents[0])
-            //     userDetails.push(item.participents[1])
-            // })
-
-
-
-            // let userData = await this.UserService.findByUserID(userDetails)
-
-            // console.log(userData);
-
             res.status(200).json({
                 data: mails,
                 status: 200,
@@ -93,6 +80,54 @@ export class MailController {
 
             res.status(200).json({
                 data: mails,
+                status: 200,
+                message: "mail",
+                error: "none"
+            });
+        } catch (err) {
+            console.error('Error getting mails:', err);
+            res.status(500).json({
+                data: "",
+                status: 500,
+                message: "Error getting mails",
+                error: err
+            });
+        }
+    };
+    async sendMail(req, res) {
+        try {
+            const { email, subject, message } = req.body
+
+            const mails = await this.MailService.sendMail(email, subject, message);
+
+            console.log(mails);
+
+            res.status(200).json({
+                data: "Mail Send",
+                status: 200,
+                message: "mail",
+                error: "none"
+            });
+        } catch (err) {
+            console.error('Error getting mails:', err);
+            res.status(500).json({
+                data: "",
+                status: 500,
+                message: "Error getting mails",
+                error: err
+            });
+        }
+    };
+    async sendMailNewsLatter(req, res) {
+        try {
+            const { email } = req.body
+
+            const mails = await this.MailService.sendMailNewsLatter(email);
+
+            console.log(mails);
+
+            res.status(200).json({
+                data: "Mail Send",
                 status: 200,
                 message: "mail",
                 error: "none"

@@ -21,7 +21,8 @@ const itemSchema = new Schema({
     },
     item_name: {
         type: String,
-        required: true
+        required: true,
+        index: 'text'
     },
     item_price: {
         type: Number,

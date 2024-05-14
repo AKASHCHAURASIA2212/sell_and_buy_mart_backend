@@ -13,6 +13,11 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    dob: {
+        type: String,
+        default: 'dd-mm-yyyy'
+
+    },
     password: {
         type: String,
         required: true
@@ -32,13 +37,17 @@ const userSchema = new Schema({
     },
     country: {
         type: String,
-        default: ''
+        default: 'India'
     },
     city: {
         type: String,
         default: ''
     },
     street: {
+        type: String,
+        default: ''
+    },
+    landmark: {
         type: String,
         default: ''
     },

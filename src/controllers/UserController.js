@@ -136,8 +136,8 @@ export class UserController {
             console.log("inside updateUserDetails");
 
             console.log(req.body);
-            let { username, email, phone, address, role, userId, user_img } = req.body;
-            const result = await this.UserService.updateUserDetails(username, email, phone, address, role, userId, user_img)
+            let { username, dob, email, phone, country, city, street, landmark, role, userId, user_img } = req.body;
+            const result = await this.UserService.updateUserDetails(username, dob, email, phone, country, city, street, landmark, role, userId, user_img)
             const resp = await this.UserService.findByUserID([userId])
             res.status(200).send({
                 data: {

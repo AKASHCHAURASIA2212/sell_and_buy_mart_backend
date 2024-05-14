@@ -36,7 +36,7 @@ const resetPassTemp = (userId) => {
         display: inline-block;
         padding: 10px 20px;
         background-color: #4285f4;
-        color: #fff;
+        color: #000;
         text-decoration: none;
         border-radius: 5px;
       }
@@ -48,7 +48,7 @@ const resetPassTemp = (userId) => {
       <h1>Password Reset</h1>
       <p>Hello,</p>
       <p>We received a request to reset your password. Click the button below to reset your password:</p>
-      <a href="https://localhost:5173/reset-password/${userId}" class="button">Reset Password</a>
+      <a href="https://rad-lily-af4c48.netlify.app/reset-password/${userId}" class="button">Reset Password</a>
       <p>If you didn't request a password reset, you can ignore this email.</p>
     </div>
   </body>
