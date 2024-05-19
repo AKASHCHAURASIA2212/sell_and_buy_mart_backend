@@ -25,7 +25,7 @@ export default class ItemService {
 
     async getItemsByCategory(category) {
         try {
-            console.log(category);
+            // console.log(category);
             let res = await Item.find({ "item_category": category }).sort({ date_entered: -1 })
             return res;
 
@@ -44,7 +44,7 @@ export default class ItemService {
 
     async getItemByUserId(id) {
         try {
-            console.log(id);
+            // console.log(id);
             let res = await Item.find({ "posted_by": { $in: id } }).sort({ date_entered: -1 })
             console.log(res);
             return res;

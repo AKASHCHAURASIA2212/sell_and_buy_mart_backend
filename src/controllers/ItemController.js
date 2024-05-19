@@ -16,7 +16,7 @@ export class ItemController {
 
             const { seller, item_name, item_category, item_price, item_desc, location, posted_by, img } = req.body;
 
-            console.log(req.body);
+            // console.log(req.body);
 
             let data = {
                 seller: seller,
@@ -56,7 +56,7 @@ export class ItemController {
 
             const { item_id, item_name, item_category, item_desc, item_price, location, img } = req.body;
 
-            console.log(req.body);
+            // console.log(req.body);
 
             const savedItem = await this.ItemService.updateItemDetails(item_id, item_name, item_category, item_desc, item_price, location, img);
 
@@ -85,7 +85,7 @@ export class ItemController {
             let search = req.params.search;
             let category = req.params.category;
 
-            console.log(req.params);
+            // console.log(req.params);
 
             let filter = { status: 'available' }
 
@@ -103,12 +103,12 @@ export class ItemController {
 
 
 
-            console.log(limit, offset);
+            // console.log(limit, offset);
 
 
 
             const items = await this.ItemService.getAllItems(Number(limit), Number(offset), filter);
-            console.log(items);
+            // console.log(items);
             res.status(200).json({
                 data: items,
                 status: 200,
@@ -129,7 +129,7 @@ export class ItemController {
     // Function to get items by category
     async getItemsByCategory(req, res) {
         try {
-            console.log("getItemsByCategory");
+            // console.log("getItemsByCategory");
             const category = req.params.category;
             const items = await this.ItemService.getItemsByCategory(category);
             // console.log(items);
@@ -184,7 +184,7 @@ export class ItemController {
     async getItemByUserId(req, res) {
         try {
             const userId = req.body.userId;
-            console.log("getItemByUserId : ", userId);
+            // console.log("getItemByUserId : ", userId);
             const item = await this.ItemService.getItemByUserId([userId]);
             if (!item) {
                 return res.status(404).json({

@@ -17,6 +17,9 @@ userRoutes.post('/update', (req, res) => {
 userRoutes.post('/check', (req, res) => {
     userController.checkUserExist(req, res)
 });
+userRoutes.post('/verify', (req, res) => {
+    userController.verifyMail(req, res)
+});
 userRoutes.post('/reset', (req, res) => {
     userController.resetPassword(req, res)
 });

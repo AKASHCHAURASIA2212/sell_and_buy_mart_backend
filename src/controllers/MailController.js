@@ -12,7 +12,7 @@ export class MailController {
 
             const mails = await this.MailService.getAllMail(Number(page), Number(limit));
 
-            console.log(mails);
+            // console.log(mails);
 
             res.status(200).json({
                 data: mails,
@@ -35,11 +35,11 @@ export class MailController {
         try {
             const { userId } = req.params;
 
-            console.log(chatId);
+            // console.log(chatId);
 
             const mails = await this.MailService.getMailByUserId(userId);
 
-            console.log(mails);
+            // console.log(mails);
 
             res.status(200).json({
                 data: mails,
@@ -72,11 +72,11 @@ export class MailController {
 
             let newMail = new Mail(data);
 
-            console.log(newMail);
+            // console.log(newMail);
 
             const mails = await this.MailService.addMail(newMail);
 
-            console.log(mails);
+            // console.log(mails);
 
             res.status(200).json({
                 data: mails,
@@ -100,7 +100,7 @@ export class MailController {
 
             const mails = await this.MailService.sendMail(email, subject, message);
 
-            console.log(mails);
+            // console.log(mails);
 
             res.status(200).json({
                 data: "Mail Send",
@@ -124,7 +124,7 @@ export class MailController {
 
             const mails = await this.MailService.sendMailNewsLatter(email);
 
-            console.log(mails);
+            // console.log(mails);
 
             res.status(200).json({
                 data: "Mail Send",

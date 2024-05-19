@@ -15,7 +15,7 @@ export class ChatController {
         try {
             const { sender, receiver, message, itemId, chat_started_by } = req.body;
 
-            console.log(req.body);
+            // console.log(req.body);
 
             // Create a new chat object
             const newChat = new Chat({
@@ -32,9 +32,9 @@ export class ChatController {
                 chat_started_by: chat_started_by
             });
 
-            console.log("---------------------------");
-            console.log(newChat);
-            console.log("---------------------------");
+            // console.log("---------------------------");
+            // console.log(newChat);
+            // console.log("---------------------------");
 
             // Save the new chat to the database
             const savedChat = await this.ChatService.addNewChat(newChat);
@@ -117,7 +117,7 @@ export class ChatController {
 
             // console.log(resp, typeof resp.seller_chat);
             // resp = JSON.parse(resp);
-            console.log(resp);
+            // console.log(resp);
 
 
             let userDetails = [];
@@ -136,15 +136,15 @@ export class ChatController {
 
             })
 
-            console.log("userDetails  : ", userDetails);
-            console.log("itemDetails  : ", itemDetails);
+            // console.log("userDetails  : ", userDetails);
+            // console.log("itemDetails  : ", itemDetails);
 
             let itemData = await this.ItemService.getItemById(itemDetails)
 
             let userData = await this.UserService.findByUserID(userDetails)
 
-            console.log(userData);
-            console.log(itemData);
+            // console.log(userData);
+            // console.log(itemData);
 
 
             res.status(200).json({
@@ -172,7 +172,7 @@ export class ChatController {
 
             // console.log(resp, typeof resp.seller_chat);
             // resp = JSON.parse(resp);
-            console.log(resp);
+            // console.log(resp);
 
 
             let userDetails = [];
@@ -191,15 +191,15 @@ export class ChatController {
 
             })
 
-            console.log("userDetails  : ", userDetails);
-            console.log("itemDetails  : ", itemDetails);
+            // console.log("userDetails  : ", userDetails);
+            // console.log("itemDetails  : ", itemDetails);
 
             let itemData = await this.ItemService.getItemById(itemDetails)
 
             let userData = await this.UserService.findByUserID(userDetails)
 
-            console.log(userData);
-            console.log(itemData);
+            // console.log(userData);
+            // console.log(itemData);
 
 
             res.status(200).json({
@@ -226,7 +226,7 @@ export class ChatController {
             // const chats = await Chat.find({ itemId });
             const chat = await this.ChatService.getChatByParticipantAndItemId([sellerId, buyerId], item_id);
 
-            console.log(chat);
+            // console.log(chat);
 
             res.status(200).json({
                 data: chat,
@@ -249,11 +249,11 @@ export class ChatController {
         try {
             const { chatId } = req.body;
             // const chats = await Chat.find({ itemId });
-            console.log(chatId);
+            // console.log(chatId);
 
             const chat = await this.ChatService.getChatByChatId(chatId);
 
-            console.log(chat);
+            // console.log(chat);
 
             let userDetails = [];
 
@@ -266,7 +266,7 @@ export class ChatController {
 
             let userData = await this.UserService.findByUserID(userDetails)
 
-            console.log(userData);
+            // console.log(userData);
 
 
             res.status(200).json({

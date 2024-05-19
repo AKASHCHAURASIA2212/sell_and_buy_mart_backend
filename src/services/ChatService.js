@@ -66,8 +66,8 @@ export default class ChatService {
 
     async getChatByParticipants(participantId, user_id) {
         try {
-            console.log(" getChatByParticipants ");
-            console.log(participantId, user_id);
+            // console.log(" getChatByParticipants ");
+            // console.log(participantId, user_id);
             const result = await Chat.aggregate([
                 {
                     $match: {
@@ -131,8 +131,8 @@ export default class ChatService {
     async getChatByUserId(user_id) {
         try {
 
-            console.log(" getChatByParticipants ");
-            console.log(participantId, user_id);
+            // console.log(" getChatByParticipants ");
+            // console.log(participantId, user_id);
             const result = await Chat.aggregate([
                 {
                     $match: {

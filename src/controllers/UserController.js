@@ -1,24 +1,54 @@
 import { User } from '../models/UserSchema.js';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import UserService from '../services/UserService.js';
 import { generateMongoId } from '../../utils/genrateId.js'
 import { sendEmails } from '../../mailer/mailer.js';
 import resetPassTemp from '../../templates/resetPassword.js';
-
-
+import { generatingAccessToken } from '../../utils/generateAccessToken.js';
 
 export class UserController {
-
     constructor() {
         this.UserService = new UserService();
     }
 
-    // Function to handle user sign up
+    async verifyMail(req, res) {
+        try {
+
+            // console.log(req.body);
+            let { otp, user_id } = req.body;
+            const resp = await this.UserService.verifyMail(otp, user_id)
+
+            if (resp) {
+                return res.status(500).json({
+                    data: resp,
+                    status: 500,
+                    message: "OPT Verified",
+                    error: ""
+                });
+            }
+
+            res.status(500).json({
+                data: "OTP Not Matched",
+                status: 500,
+                message: "Internal server error",
+                error: ""
+            });
+
+        } catch (err) {
+            console.error('Error signing up:', err);
+            res.status(500).json({
+                data: "",
+                status: 500,
+                message: "Internal server error",
+                error: err
+            });
+        }
+    };
+
     async userSignUp(req, res) {
         try {
 
-            console.log(req.body);
+            // console.log(req.body);
             const resp = await this.UserService.findByMail(req.body.email)
 
             if (resp) {
@@ -30,10 +60,8 @@ export class UserController {
                 })
             }
             else {
-                // Hash the password
                 const hashedPassword = bcrypt.hashSync(req.body.password, 13);
 
-                // Create a new user object
                 const newUser = new User({
                     user_id: generateMongoId(),
                     username: req.body.username,
@@ -42,14 +70,15 @@ export class UserController {
                     user_img: ''
                 });
 
-                // Save the new user to the database
                 const resp = await this.UserService.signUp(newUser);
-                console.log(resp);
+                // console.log(resp);
+
                 res.status(201).json({
                     data: {
                         user_id: newUser.user_id,
                         username: newUser.username,
-                        role: newUser.role
+                        role: newUser.role,
+                        email: newUser.email
                     },
                     status: 201,
                     message: "New User Created !!!",
@@ -82,7 +111,8 @@ export class UserController {
                 let resps = await bcrypt.compare(req.body.password, resp.password)
 
                 if (resps) {
-                    let token = jwt.sign({ user_id: resp.user_id, email: resp.email }, 'SECRET KEY', { expiresIn: '20min' })
+
+                    let token = await generatingAccessToken(resp.user_id, resp.email)
                     res.status(200).send({
                         data: {
                             user_id: resp.user_id,
@@ -112,11 +142,11 @@ export class UserController {
 
     async getUserByID(req, res) {
         try {
-            console.log("inside getUserByID");
+            // console.log("inside getUserByID");
 
             let user_id = req.params.user_id;
             const resp = await this.UserService.findByUserID([user_id])
-            console.log(resp);
+            // console.log(resp);
             res.status(200).send({
                 data: {
                     data: resp[0]
@@ -133,9 +163,9 @@ export class UserController {
 
     async updateUserDetails(req, res) {
         try {
-            console.log("inside updateUserDetails");
+            // console.log("inside updateUserDetails");
 
-            console.log(req.body);
+            // console.log(req.body);
             let { username, dob, email, phone, country, city, street, landmark, role, userId, user_img } = req.body;
             const result = await this.UserService.updateUserDetails(username, dob, email, phone, country, city, street, landmark, role, userId, user_img)
             const resp = await this.UserService.findByUserID([userId])
@@ -164,8 +194,8 @@ export class UserController {
 
     async checkUserExist(req, res) {
         try {
-            console.log("inside checkUserExist");
-            console.log(req.body);
+            // console.log("inside checkUserExist");
+            // console.log(req.body);
             const user = await this.UserService.findByMail(req.body.email);
             if (!user) {
                 return res.status(400).send({
@@ -177,7 +207,7 @@ export class UserController {
 
             }
 
-            console.log(user);
+            // console.log(user);
 
             const userId = user.user_id;
             const email = user.email;
@@ -214,7 +244,7 @@ export class UserController {
             let { password, userId } = req.body;
             const hashedPassword = bcrypt.hashSync(password, 13);
             const result = await this.UserService.resetPassword(userId, hashedPassword)
-            console.log(result);
+            // console.log(result);
             res.status(200).send({
                 data: '',
                 status: 200,
@@ -226,8 +256,6 @@ export class UserController {
             res.status(500).json({ error: 'Internal server error' });
         }
     };
-
-
 
 }
 

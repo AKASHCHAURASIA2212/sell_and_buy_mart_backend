@@ -71,8 +71,14 @@ const userSchema = new Schema({
     deleted: {
         type: String,
         default: '0'
-    }
+    },
+    varified: {
+        type: Boolean,
+        default: false
+    },
+
 });
+
 
 // User model using the schema
 export const User = mongoose.model('User', userSchema);

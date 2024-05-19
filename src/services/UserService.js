@@ -1,19 +1,60 @@
-import { getDB } from "../../db/connection.js";
 import { sendEmails } from "../../mailer/mailer.js";
-import weeklyNewsletter from "../../templates/weeklyNewsletter.js";
 import welcome from "../../templates/welcome.js";
 import { User } from "../models/UserSchema.js";
+import { OTP } from "../models/OTPSchema.js";
+import otpGenerator from 'otp-generator'
 export default class UserService {
+
+    async verifyMail(otp, user_id) {
+        try {
+
+            let user = await User.findOne({ user_id }, { password: 0, deleted_by: 0 })
+
+            let res = await OTP.findOne({ email: user.email });
+
+            if (res.otp == otp) {
+                let res = await User.updateOne(
+                    { user_id },
+                    {
+                        $set: {
+                            varified: true
+                        }
+                    }
+                )
+
+                sendEmails([user.email], "Greetings", welcome(user.username))
+
+                return user;
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.log("something went wrong in verifyMail : ", error);
+        }
+    }
+
     async signUp(newUser) {
         try {
-            let res = await User.create(newUser)
-            sendEmails([newUser.email], "Greetings", welcome(newUser.username))
-            console.log(res);
+            let res = await User.create(newUser);
+
+            let otp = otpGenerator.generate(6, {
+                upperCaseAlphabets: false,
+                lowerCaseAlphabets: false,
+                specialChars: false,
+            });
+            let otp_res = await OTP.create({ email: newUser.email, otp });
+
+            sendEmails([newUser.email], "Email Verification", `<h1>Please confirm your OTP</h1>
+            <p>Here is your OTP code: ${otp}</p>`);
+
+            // console.log(res);
             return res;
         } catch (error) {
             console.log("something went wrong in signUp : ", error);
         }
     }
+
+
 
     async signIn(email, password) {
         try {

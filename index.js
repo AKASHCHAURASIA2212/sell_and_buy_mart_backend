@@ -7,6 +7,7 @@ import { chatRoutes } from './src/routes/chatRoutes.js';
 import { mailRoutes } from './src/routes/mailRoutes.js';
 import { adminRoutes } from './src/routes/adminRoutes.js';
 import { connectToMongoDB } from './db/connection.js';
+import { authMiddleware } from './middleware/authenticate.js';
 import dotenv from "dotenv";
 
 await connectToMongoDB();
@@ -27,10 +28,10 @@ app.listen(port, async () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
 app.use('/api/users', userRoutes);
-app.use('/api/items', itemRoutes);
-app.use('/api/chat', chatRoutes);
-app.use('/api/mail', mailRoutes);
-app.use('/api/admin', adminRoutes);
+app.use('/api/items', authMiddleware, itemRoutes);
+app.use('/api/chat', authMiddleware, chatRoutes);
+app.use('/api/mail', authMiddleware, mailRoutes);
+app.use('/api/admin', authMiddleware, adminRoutes);
 
 app.get('/', (req, res) => {
     res.status(200).send('S&BM SERVER START');
