@@ -103,6 +103,7 @@ export default class ChatService {
                             username: 1,
                             email: 1,
                             address: 1,
+                            user_img: 1
                         },
                         item_details: {
                             item_id: 1,
@@ -167,6 +168,7 @@ export default class ChatService {
                             username: 1,
                             email: 1,
                             address: 1,
+                            user_img: 1
                         },
                         item_details: {
                             item_id: 1,
@@ -252,6 +254,7 @@ export default class ChatService {
                             username: 1,
                             email: 1,
                             address: 1,
+                            user_img: 1
                         },
                         item_details: {
                             item_id: 1,
