@@ -48,7 +48,7 @@ const welcomeTemp = (username) => {
             <p>Dear ${username},</p>
             <p>We are thrilled to have you join us at Sell & Buy Mart. Get ready for an amazing experience!</p>
             <p>Explore our services and discover a world of possibilities.</p>
-            <a href="https://www.google.com" class="button">Get Started</a>
+            <a href="https://sell-and-buy-mart.netlify.app" class="button">Get Started</a>
           </div>
         </body>
       </html>
