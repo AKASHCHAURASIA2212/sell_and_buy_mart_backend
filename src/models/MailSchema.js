@@ -19,7 +19,6 @@ const mailSchema = new mongoose.Schema({
     },
     sentBy: {
         type: String,
-        required: true
     },
     sentTo: {
         type: String,
