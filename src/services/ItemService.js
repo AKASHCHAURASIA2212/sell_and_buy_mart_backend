@@ -55,10 +55,10 @@ export default class ItemService {
 
     async getItems(limit) {
         try {
-            let res = await Item.find({})
+            let res = await Item.find({ deleted: '0' })
                 .sort({ date_entered: -1 })
                 .limit(limit)
-            let totalCount = await Item.countDocuments()
+            let totalCount = await Item.countDocuments({ deleted: '0' })
             return { res, totalCount };
         } catch (error) {
             console.log("something went wrong in getItems : ", error);

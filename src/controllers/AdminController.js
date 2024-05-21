@@ -97,7 +97,7 @@ class AdminController {
         try {
             let limit = req.params.limit;
             let page = req.params.page;
-            let itemData = await this.ItemService.getAllItems(Number(limit), Number(page), {});
+            let itemData = await this.ItemService.getAllItems(Number(limit), Number(page), { deleted: '0' });
             res.status(200).send({
                 data: {
                     itemData: itemData,

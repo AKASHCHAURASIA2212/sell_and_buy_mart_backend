@@ -59,14 +59,12 @@ export class MailController {
     };
     async addMail(req, res) {
         try {
-            const { userId } = req.params;
             const { subject, email, message } = req.body
 
             let data = {
                 subject,
                 message,
                 email,
-                sentBy: userId,
                 sentTo: 'admin'
             }
 

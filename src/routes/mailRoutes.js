@@ -20,7 +20,7 @@ mailRoutes.post('/send', (req, res) => {
     mailController.sendMail(req, res)
 });
 
-mailRoutes.post('/:userId', (req, res) => {
+mailRoutes.post('/contact', (req, res) => {
     mailController.addMail(req, res)
 });
 

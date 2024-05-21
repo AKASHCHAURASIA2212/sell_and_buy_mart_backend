@@ -12,21 +12,28 @@ export default class UserService {
 
             let res = await OTP.findOne({ email: user.email });
 
-            if (res.otp == otp) {
-                let res = await User.updateOne(
-                    { user_id },
-                    {
-                        $set: {
-                            varified: true
+            if (res) {
+
+                if (res.otp == otp) {
+                    let res = await User.updateOne(
+                        { user_id },
+                        {
+                            $set: {
+                                varified: true,
+                                deleted: '0'
+                            }
                         }
-                    }
-                )
+                    )
 
-                sendEmails([user.email], "Greetings", welcome(user.username))
+                    sendEmails([user.email], "Greetings", welcome(user.username))
+                    return { data: user, status: true };
 
-                return user;
+                } else {
+                    return { data: "OTP Not Matched", status: false }
+                }
+
             } else {
-                return null;
+                return { data: "OTP Expired For This Email", status: false };
             }
         } catch (error) {
             console.log("something went wrong in verifyMail : ", error);
@@ -58,7 +65,7 @@ export default class UserService {
 
     async signIn(email, password) {
         try {
-            let res = await User.findOne({ "email": email, "password": password })
+            let res = await User.findOne({ "email": email, "password": password, deleted: '0', varified: true })
             return res;
         } catch (error) {
             console.log("something went wrong in signIn : ", error);
@@ -110,11 +117,11 @@ export default class UserService {
 
     async getUsers(pageSize, currentPage) {
         try {
-            let res = await User.find({})
+            let res = await User.find({ deleted: '0', varified: true })
                 .sort({ created_at: -1 })
                 .skip((currentPage - 1) * pageSize)
                 .limit(pageSize)
-            let totalCount = await User.countDocuments()
+            let totalCount = await User.countDocuments({ deleted: '0', varified: true })
             return { res, totalCount };
         } catch (error) {
             console.log("something went wrong in findByMail : ", error);

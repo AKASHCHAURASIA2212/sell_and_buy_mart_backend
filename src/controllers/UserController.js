@@ -18,19 +18,21 @@ export class UserController {
             let { otp, user_id } = req.body;
             const resp = await this.UserService.verifyMail(otp, user_id)
 
-            if (resp) {
+            console.log(resp);
+
+            if (resp.status) {
                 return res.status(500).json({
                     data: resp,
-                    status: 500,
+                    status: 200,
                     message: "OPT Verified",
                     error: ""
                 });
             }
 
             res.status(500).json({
-                data: "OTP Not Matched",
+                data: resp,
                 status: 500,
-                message: "Internal server error",
+                message: resp.data,
                 error: ""
             });
 

@@ -70,7 +70,7 @@ const userSchema = new Schema({
     },
     deleted: {
         type: String,
-        default: '0'
+        default: '1'
     },
     varified: {
         type: Boolean,

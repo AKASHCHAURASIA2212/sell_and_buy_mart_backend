@@ -24,6 +24,10 @@ const mailSchema = new mongoose.Schema({
     sentTo: {
         type: String,
         required: true
+    },
+    resolved: {
+        type: Boolean,
+        default: false
     }
 });
 

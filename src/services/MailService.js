@@ -18,34 +18,7 @@ export default class MailService {
     async getAllMail(currentPage, pageSize) {
         try {
             let totalCount = await Mail.countDocuments({})
-            const allMail = await Mail.aggregate([
-                {
-                    $match: {
-                        sentTo: 'admin'
-                    }
-                },
-                {
-                    $lookup: {
-                        from: 'users',
-                        localField: 'sentBy',
-                        foreignField: 'user_id',
-                        as: 'sender'
-                    }
-                },
-                {
-                    $unwind: '$sender'
-                },
-                {
-                    $project: {
-                        subject: 1,
-                        message: 1,
-                        email: 1,
-                        'sender.user_id': 1,
-                        'sender.username': 1,
-                        'sender.address': 1,
-                    }
-                }
-            ])
+            const allMail = await Mail.find({})
                 .skip((currentPage - 1) * pageSize)
                 .limit(pageSize)
             return { allMail, totalCount }
@@ -86,7 +59,7 @@ export default class MailService {
 
     async getMails(limit) {
         try {
-            let res = await Mail.find().sort({ dateEntered: -1 }).limit(limit)
+            let res = await Mail.find({}).sort({ dateEntered: -1 }).limit(limit)
             let totalCount = await Mail.countDocuments()
             return { res, totalCount };
 
