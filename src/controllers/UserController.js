@@ -21,7 +21,7 @@ export class UserController {
             console.log(resp);
 
             if (resp.status) {
-                return res.status(500).json({
+                return res.status(200).json({
                     data: resp,
                     status: 200,
                     message: "OPT Verified",
