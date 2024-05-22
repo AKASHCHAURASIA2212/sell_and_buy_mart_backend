@@ -25,7 +25,7 @@ export default class UserService {
                         }
                     )
 
-                    sendEmails([user.email], "Greetings", welcome(user.username))
+                    await sendEmails([user.email], "Greetings", welcome(user.username))
                     return { data: user, status: true };
 
                 } else {
@@ -51,7 +51,7 @@ export default class UserService {
             });
             let otp_res = await OTP.create({ email: newUser.email, otp });
 
-            sendEmails([newUser.email], "Email Verification", `<h1>Please confirm your OTP</h1>
+            await sendEmails([newUser.email], "Email Verification", `<h1>Please confirm your OTP</h1>
             <p>Here is your OTP code: ${otp}</p>`);
 
             // console.log(res);
