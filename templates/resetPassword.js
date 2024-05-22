@@ -35,8 +35,8 @@ const resetPassTemp = (userId) => {
       .button {
         display: inline-block;
         padding: 10px 20px;
-        background-color: #4285f4;
-        color: #000;
+        background-color: #000;
+        color: #fff;
         text-decoration: none;
         border-radius: 5px;
       }
@@ -48,7 +48,7 @@ const resetPassTemp = (userId) => {
       <h1>Password Reset</h1>
       <p>Hello,</p>
       <p>We received a request to reset your password. Click the button below to reset your password:</p>
-      <a href="https://sell-and-buy-mart.netlify.app/reset-password/${userId}" class="button">Reset Password</a>
+      <a href="https://sabm-client.vercel.app/reset-password/${userId}" class="button">Reset Password</a>
       <p>If you didn't request a password reset, you can ignore this email.</p>
     </div>
   </body>
