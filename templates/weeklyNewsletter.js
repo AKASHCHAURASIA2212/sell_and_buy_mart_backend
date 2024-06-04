@@ -1,75 +1,61 @@
 const weeklyTemp = () => {
-  return `<!DOCTYPE html>< html lang = "en" > <head>
-        <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Weekly Product Update</title>
-            <style>
-              body {
-                font - family: Arial, sans-serif;
+  return `<!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Thank You for Subscribing</title>
+      <style>
+          body {
+              font-family: Arial, sans-serif;
               background-color: #f9f9f9;
-              margin: 0;
-              padding: 0;
-      }
-
-              .container {
-                max - width: 600px;
-              margin: 50px auto;
+              text-align: center;
               padding: 20px;
-              background-color: #fff;
-              border-radius: 5px;
-              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
+          }
+          .container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #ffffff;
+              padding: 20px;
+              border-radius: 10px;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          }
+          h1 {
+              color: #333;
+          }
+          p {
+              color: #666;
+          }
 
-              h1 {
-                color: #333;
-      }
+          a {
+            color: white !important;
+            text-decoration: none;
+         }        
 
-              p {
-                color: #666;
-              line-height: 1.6;
-      }
-
-              .product-item {
-                margin - bottom: 20px;
-              padding-bottom: 10px;
-              border-bottom: 1px solid #ccc;
-      }
-
-              .product-name {
-                font - weight: bold;
-      }
-
-              .button {
-                display: inline-block;
+          .btn {
+              display: inline-block;
               padding: 10px 20px;
-              background-color: #4285f4;
+              margin-top: 20px;
+              background-color: #000;
               color: #fff;
               text-decoration: none;
               border-radius: 5px;
-      }
-            </style>
-          </head>
-
-          <body>
-            <div class="container">
-              <h1>Weekly Product Update</h1>
-              <div class="product-item">
-                <p class="product-name">Product A</p>
-                <p>New features added: Feature 1, Feature 2</p>
-              </div>
-              <div class="product-item">
-                <p class="product-name">Product B</p>
-                <p>Improvements made: Improvement 1, Improvement 2</p>
-              </div>
-              <div class="product-item">
-                <p class="product-name">Product C</p>
-                <p>Bug fixes: Bug 1, Bug 2</p>
-              </div>
-              <p>Stay tuned for more updates next week!</p>
-              <a href="#" class="button">View Details</a>
-            </div>
-          </body>
-
-        </html>`
+              font-weight: bold;
+          }
+          .btn:hover {
+              background-color: #000;
+          }
+      </style>
+  </head>
+  <body>
+      <div class="container">
+          <h1>Thank You for Subscribing!</h1>
+          <p>We appreciate your interest in our weekly newsletter. Stay tuned for exciting updates, news, and exclusive content.</p>
+          <p>If you have any questions or feedback, feel free to reply to this email. We'd love to hear from you!</p>
+          <a href="https://sabm-client.vercel.app/" class="btn">See More</a>
+      </div>
+  </body>
+  </html>
+  `
 }
 export default weeklyTemp

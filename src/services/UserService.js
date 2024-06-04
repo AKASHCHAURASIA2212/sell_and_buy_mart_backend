@@ -2,6 +2,7 @@ import { sendEmails } from "../../mailer/mailer.js";
 import welcome from "../../templates/welcome.js";
 import { User } from "../models/UserSchema.js";
 import { OTP } from "../models/OTPSchema.js";
+import otpTemp from "../../templates/otp.js";
 import otpGenerator from 'otp-generator'
 export default class UserService {
 
@@ -50,9 +51,8 @@ export default class UserService {
                 specialChars: false,
             });
             let otp_res = await OTP.create({ email: newUser.email, otp });
-
-            await sendEmails([newUser.email], "Email Verification", `<h1>Please confirm your OTP</h1>
-            <p>Here is your OTP code: ${otp}</p>`);
+            let otpHtmlTemp = otpTemp(otp);
+            await sendEmails([newUser.email], "Email Verification", otpHtmlTemp);
 
             // console.log(res);
             return res;
@@ -60,8 +60,6 @@ export default class UserService {
             console.log("something went wrong in signUp : ", error);
         }
     }
-
-
 
     async signIn(email, password) {
         try {

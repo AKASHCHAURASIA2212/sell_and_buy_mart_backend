@@ -11,7 +11,6 @@ export default class ChatService {
             console.log("something went wrong in addItem : ", error);
         }
     }
-
     async insertChat(chatId, content, sendBy, message_id) {
         try {
             const result = await Chat.updateOne(
@@ -38,7 +37,6 @@ export default class ChatService {
             return err
         }
     };
-
     async updateChat(chatId, messageId, newMessage) {
         try {
             const filter = {
@@ -63,7 +61,6 @@ export default class ChatService {
             return err
         }
     };
-
     async getChatByParticipants(participantId, user_id) {
         try {
             // console.log(" getChatByParticipants ");
@@ -193,7 +190,6 @@ export default class ChatService {
             throw error;
         }
     }
-
     async getChatByParticipantAndItemId(participantId, itemId) {
         try {
             const chat = await Chat.find({
@@ -215,8 +211,6 @@ export default class ChatService {
             throw error;
         }
     }
-
-
     async getChatByUserId(user_id) {
         try {
             const result = await Chat.aggregate([

@@ -13,6 +13,12 @@ const resetPassTemp = (userId) => {
         margin: 0;
         padding: 0;
       }
+
+      a {
+        color: white !important;
+        text-decoration: none;
+       }
+    
   
       .container {
         max-width: 600px;

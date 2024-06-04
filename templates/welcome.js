@@ -23,11 +23,11 @@ const welcomeTemp = (username) => {
     }
 
             h1 {
-              color: #333;
+              color: #000;
     }
 
             p {
-              color: #666;
+              color: #000;
             line-height: 1.6;
     }
 
@@ -39,6 +39,11 @@ const welcomeTemp = (username) => {
             text-decoration: none;
             border-radius: 5px;
     }
+    a {
+      color: white !important;
+      text-decoration: none;
+    }
+  
           </style>
         </head>
 
@@ -48,7 +53,7 @@ const welcomeTemp = (username) => {
             <p>Dear ${username},</p>
             <p>We are thrilled to have you join us at Sell & Buy Mart. Get ready for an amazing experience!</p>
             <p>Explore our services and discover a world of possibilities.</p>
-            <a href="https://sell-and-buy-mart.netlify.app" class="button">Get Started</a>
+            <a href="https://sabm-client.vercel.app/" class="button">Get Started</a>
           </div>
         </body>
       </html>
